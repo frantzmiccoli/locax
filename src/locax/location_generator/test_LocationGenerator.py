@@ -41,7 +41,7 @@ def test_get_day_data_starts_and_ends_at_home():
     day_data = location_generator.get_day_data(1)
 
     distances_to_home = []
-    day_data_to_consider = [day_data[0], day_data[-1]] # first and last days
+    day_data_to_consider = [day_data[0], day_data[-1]]  # first and last days
     for day_datum in day_data_to_consider:
         delta_x = day_datum['x'] - location_generator._home['x']
         delta_y = day_datum['y'] - location_generator._home['y']
@@ -49,8 +49,23 @@ def test_get_day_data_starts_and_ends_at_home():
         distance = math.sqrt(pow(delta_x, 2) + pow(delta_y, 2))
         distances_to_home.append(distance)
 
-    non_zero_distances = [d for d in distances_to_home if abs(d) > 0]
+    epsilon = 0.0000001
+    non_zero_distances = [d for d in distances_to_home if abs(d) > epsilon]
     assert(len(non_zero_distances) == 0)
 
+
+def test_get_day_data_stays_within_one_day():
+    for i in range(0, 1000):
+        local_location_generator_context = LocationGeneratorContext()
+        local_location_generator = \
+            LocationGenerator(local_location_generator_context)
+        day_data = local_location_generator.get_day_data(1)
+        first_day_data_timestamp = day_data[0]['timestamp']
+        last_day_data_timestamp = day_data[-1]['timestamp']
+        timestamp_difference = \
+            last_day_data_timestamp - first_day_data_timestamp
+        assert(timestamp_difference > 0)
+        one_day = 24 * 60 * 60
+        assert(timestamp_difference < one_day)
 
 

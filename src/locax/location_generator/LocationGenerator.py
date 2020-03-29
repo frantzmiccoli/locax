@@ -32,8 +32,6 @@ class LocationGenerator:
     def get_day_data(self, days_ago):
         current_poi = self._home
         current_timestamp = time.time()
-        day_data = [self._get_location_data(
-            current_poi, current_timestamp, 'home')]
         one_day_in_seconds = 24 * 60 * 60
         x_days_ago_timestamp = current_timestamp - days_ago * one_day_in_seconds
         x_days_ago_datetime = \
@@ -44,6 +42,8 @@ class LocationGenerator:
         midnight_timestamp = int(midnight_datetime.strftime("%s"))
         one_day = (24 * 60 * 60)
         elapsed_time = 6 * 60 * 60
+        day_data = [self._get_location_data(
+            current_poi, midnight_timestamp + elapsed_time, 'home')]
 
         points_of_interests_to_visit = \
             self._get_points_of_interest_to_visit_over_one_day()

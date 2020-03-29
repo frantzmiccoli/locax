@@ -16,11 +16,16 @@ I am just doing for fun and to try to live stream the whole process.
 Live stream
 ===
 
-First session, 22nd March 2020: https://www.youtube.com/watch?v=PzXzaLLXWAA
-We did a project overview, project setup and first simulation code
+First session, 22nd March 2020: project overview, project setup and
+first simulation code  https://www.youtube.com/watch?v=PzXzaLLXWAA
 
-Second session, 29th March 2020:
+
+Second session, 29th March 2020: unit test, debugging and making more
+realistic daily travels
 https://www.youtube.com/watch?v=2o_xeiugMW4
+
+Third session will be about: writing our fake data in JSON files, and
+loading them in another part of the project (map visualization).
 
 Nothing fancy, just writing code.
 
