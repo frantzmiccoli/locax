@@ -1,6 +1,6 @@
 import random
 import time
-from datetime import datetime, time
+import datetime
 
 
 class LocationGenerator:
@@ -17,17 +17,15 @@ class LocationGenerator:
 
         self._home = self._context.get_random_point('home')
 
-        random.shuffle(context.points_of_interest)
-        number_of_key_points_of_interest = random.random(3, 4)
+        number_of_key_points_of_interest = random.randint(3, 4)
         self._key_points_of_interest = \
-            context.points_of_interest[:number_of_key_points_of_interest]
+            context.generate_random_points_of_interest(
+                number_of_key_points_of_interest)
 
         number_of_secondary_points_of_interest = 10
-        extract_from_index = number_of_key_points_of_interest
-        extract_to_index = number_of_secondary_points_of_interest + \
-            number_of_key_points_of_interest
         self._secondary_points_of_interest = \
-            context.points_of_interest[extract_from_index:extract_to_index]
+            context.generate_random_points_of_interest(
+                number_of_secondary_points_of_interest)
 
     def get_day_data(self, days_ago):
         current_poi = self._home
@@ -36,9 +34,11 @@ class LocationGenerator:
             current_poi, current_timestamp, 'home')]
         one_day_in_seconds = 24 * 60 * 60
         x_days_ago_timestamp = current_timestamp - days_ago * one_day_in_seconds
-        x_days_ago_datetime = datetime.fromtimestamp(x_days_ago_timestamp)
+        x_days_ago_datetime = \
+            datetime.datetime.fromtimestamp(x_days_ago_timestamp)
 
-        midnight_datetime = datetime.combine(x_days_ago_datetime, time.min)
+        midnight_datetime = \
+            datetime.datetime.combine(x_days_ago_datetime, datetime.time.min)
         midnight_timestamp = int(midnight_datetime.strftime("%s"))
         one_day = (24 * 60 * 60)
         elapsed_time = 6 * 60 * 60
@@ -57,14 +57,19 @@ class LocationGenerator:
             timestamp_precision = 30
             move_timestamp = midnight_timestamp + elapsed_time + \
                 mean_time_to_wait_at_location
-            end_timestamp = move_timestamp + time_to_switch_location
-            for intermediate_timestamp in \
-                    range(move_timestamp, end_timestamp, timestamp_precision):
+            end_timestamp = move_timestamp \
+                + int(time_to_switch_location / timestamp_precision) \
+                * timestamp_precision
+            timestamp_range = range(move_timestamp,
+                                    end_timestamp + timestamp_precision,
+                                    timestamp_precision)
+            for intermediate_timestamp in timestamp_range:
                 current_position = \
-                    self._get_intermediate_location(current_poi, next_poi,
-                        move_timestamp, end_timestamp, current_timestamp)
+                    self._get_intermediate_location(
+                        current_poi, next_poi,
+                        move_timestamp, end_timestamp, intermediate_timestamp)
                 location_name = 'moving-from-' + current_poi['name'] + \
-                                'to' + next_poi['name']
+                                '-to-' + next_poi['name']
                 day_data.append(self._get_location_data(
                     current_position, intermediate_timestamp, location_name))
 
@@ -99,13 +104,13 @@ class LocationGenerator:
                 random.shuffle(self._key_points_of_interest)
                 points_of_interest_for_today.append(
                     self._key_points_of_interest[0])
-                continue;
+                continue
 
             if random_number < 5:
                 random.shuffle(self._secondary_points_of_interest)
                 points_of_interest_for_today.append(
                     self._secondary_points_of_interest[0])
-                continue;
+                continue
 
             random.shuffle(self._context.points_of_interest)
             points_of_interest_for_today.append(
@@ -113,10 +118,16 @@ class LocationGenerator:
 
         return points_of_interest_for_today
 
-    def _get_intermediate_location(self, start_location, end_location,
-            start_timestamp, end_timestamp, current_timestamp):
-        delta = (end_timestamp - start_timestamp) / end_timestamp
-        progression = (current_timestamp - start_timestamp) * delta
+    def _get_intermediate_location(
+            self,
+            start_location,
+            end_location,
+            start_timestamp,
+            end_timestamp,
+            current_timestamp
+    ):
+        delta = float(end_timestamp - start_timestamp)
+        progression = 1.0 - ((end_timestamp - current_timestamp) / delta)
 
         delta_x = (end_location['x'] - start_location['x'])
         x = start_location['x'] + delta_x * progression
