@@ -36,3 +36,21 @@ def test_get_day_data_short_distance_between_points():
     assert(float(len(non_zero_distances)) / float(len(distances)) > 0.95)
     assert(numpy.std(distances) < 0.5)
 
+
+def test_get_day_data_starts_and_ends_at_home():
+    day_data = location_generator.get_day_data(1)
+
+    distances_to_home = []
+    day_data_to_consider = [day_data[0], day_data[-1]] # first and last days
+    for day_datum in day_data_to_consider:
+        delta_x = day_datum['x'] - location_generator._home['x']
+        delta_y = day_datum['y'] - location_generator._home['y']
+
+        distance = math.sqrt(pow(delta_x, 2) + pow(delta_y, 2))
+        distances_to_home.append(distance)
+
+    non_zero_distances = [d for d in distances_to_home if abs(d) > 0]
+    assert(len(non_zero_distances) == 0)
+
+
+

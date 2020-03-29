@@ -27,6 +27,8 @@ class LocationGenerator:
             context.generate_random_points_of_interest(
                 number_of_secondary_points_of_interest)
 
+        self._time_to_switch_location = random.randint(10 * 60, 50 * 60)
+
     def get_day_data(self, days_ago):
         current_poi = self._home
         current_timestamp = time.time()
@@ -45,38 +47,46 @@ class LocationGenerator:
 
         points_of_interests_to_visit = \
             self._get_points_of_interest_to_visit_over_one_day()
-        time_to_switch_location = random.randint(10 * 60, 50 * 60)
+        points_of_interests_to_visit.append(self._home)
+        time_to_switch_location = self._time_to_switch_location
         mean_time_to_wait_at_location = (one_day - elapsed_time) / \
             len(points_of_interests_to_visit) \
             - time_to_switch_location
 
-        for points_of_interests_index in \
-                range(0, len(points_of_interests_to_visit)):
-
-            next_poi = points_of_interests_to_visit.pop()
-            timestamp_precision = 30
+        for next_poi in points_of_interests_to_visit:
             move_timestamp = midnight_timestamp + elapsed_time + \
                 mean_time_to_wait_at_location
-            end_timestamp = move_timestamp \
-                + int(time_to_switch_location / timestamp_precision) \
-                * timestamp_precision
-            timestamp_range = range(move_timestamp,
-                                    end_timestamp + timestamp_precision,
-                                    timestamp_precision)
-            for intermediate_timestamp in timestamp_range:
-                current_position = \
-                    self._get_intermediate_location(
-                        current_poi, next_poi,
-                        move_timestamp, end_timestamp, intermediate_timestamp)
-                location_name = 'moving-from-' + current_poi['name'] + \
-                                '-to-' + next_poi['name']
-                day_data.append(self._get_location_data(
-                    current_position, intermediate_timestamp, location_name))
+            move_data = \
+                self._get_move_data(current_poi, next_poi, move_timestamp)
+            [day_data.append(d) for d in move_data]
 
             current_poi = next_poi
+            end_timestamp = move_data[-1]['timestamp']
             elapsed_time = end_timestamp - midnight_timestamp
 
         return day_data
+
+    def _get_move_data(self, current_poi, next_poi, move_timestamp):
+        move_data = []
+        timestamp_precision = 30
+        end_timestamp = \
+            move_timestamp \
+            + int(self._time_to_switch_location / timestamp_precision) \
+            * timestamp_precision
+        timestamp_range = range(move_timestamp,
+                                end_timestamp + timestamp_precision,
+                                timestamp_precision)
+        for intermediate_timestamp in timestamp_range:
+            current_position = \
+                self._get_intermediate_location(
+                    current_poi, next_poi,
+                    move_timestamp, end_timestamp, intermediate_timestamp)
+            location_name = 'moving-from-' + current_poi['name'] + \
+                            '-to-' + next_poi['name']
+            move_data.append(self._get_location_data(
+                current_position, intermediate_timestamp, location_name))
+
+        return move_data
 
     def _get_location_data(self, point, timestamp, name):
         return {
