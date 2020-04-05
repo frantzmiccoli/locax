@@ -25,8 +25,8 @@ realistic daily trips
 https://www.youtube.com/watch?v=2o_xeiugMW4
 
 Third session will be about: writing our fake data in JSON files, and
-loading them in another part of the project (map visualization). 5th April at 
-17h CEST https://youtu.be/vBDytVu97l0
+loading them in another part of the project (map visualization).
+5th April at 17h CEST https://youtu.be/vBDytVu97l0
 
 Nothing fancy, just writing code.
 

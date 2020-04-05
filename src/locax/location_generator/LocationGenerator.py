@@ -73,8 +73,8 @@ class LocationGenerator:
             move_timestamp \
             + int(self._time_to_switch_location / timestamp_precision) \
             * timestamp_precision
-        timestamp_range = range(move_timestamp,
-                                end_timestamp + timestamp_precision,
+        timestamp_range = range(int(move_timestamp),
+                                int(end_timestamp + timestamp_precision),
                                 timestamp_precision)
         for intermediate_timestamp in timestamp_range:
             current_position = \
