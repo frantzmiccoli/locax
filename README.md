@@ -28,5 +28,10 @@ Third session will be about: writing our fake data in JSON files, and
 loading them in another part of the project (map visualization).
 5th April at 17h CEST https://youtu.be/vBDytVu97l0
 
+Fourth session will be about: visualizing multiple person data on our
+map, maybe a bit of refactoring to keep things maintainable and
+algorithmic analysis of people crossing path. Likely 12th April 17h CEST
+maybe on Twitch this time.
+
 Nothing fancy, just writing code.
 
