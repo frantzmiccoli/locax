@@ -1,3 +1,9 @@
+import random
+
+seed = 644
+random.seed(seed)
+
+
 import math
 import numpy
 from pprint import pprint

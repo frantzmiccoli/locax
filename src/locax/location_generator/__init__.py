@@ -6,9 +6,10 @@ from locax.location_generator.persist_person_data import persist_person_data
 import sys
 
 
-def generate_location(start_days_ago, end_days_ago, people_count):
-    context = LocationGeneratorContext()
+context = LocationGeneratorContext()
 
+
+def generate_location(start_days_ago, end_days_ago, people_count):
     for i in range(0, people_count):
         generator = LocationGenerator(context)
         person_data = []
