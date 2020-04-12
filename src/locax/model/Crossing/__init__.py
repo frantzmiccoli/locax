@@ -6,6 +6,10 @@ class Crossing:
 
         self.end_timestamp = None
         self.valid_spread = None
+        self.is_infectious = False
+        for person in self.persons:
+            if person.is_infected:
+                self.is_infectious = True
 
     def get_duration(self):
         return self.end_timestamp - self.start_timestamp

@@ -11,6 +11,8 @@ def test_detect_crossings():
         persons.append(Person(name_counter, name, fake_location))
         name_counter += 1
 
+    persons[2].is_infected = True
+
     spread_analysis = SpreadAnalysis(persons)
     spread_analysis.detect_crossings()
 

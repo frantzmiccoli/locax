@@ -24,14 +24,15 @@ Second session, 29th March 2020: unit test, debugging and making more
 realistic daily trips
 https://www.youtube.com/watch?v=2o_xeiugMW4
 
-Third session will be about: writing our fake data in JSON files, and
-loading them in another part of the project (map visualization).
-5th April at 17h CEST https://youtu.be/vBDytVu97l0
+Third session, 5th April 2020: writing our fake data in JSON files, and
+loading them in another part of the project (map visualization)
+https://www.youtube.com/watch?v=GSAQe1xKhCI
 
-Fourth session will be about: visualizing multiple person data on our
-map, maybe a bit of refactoring to keep things maintainable and
-algorithmic analysis of people crossing path. Likely 12th April 17h CEST
-maybe on Twitch this time.
+Fourth session, 12th April 2020: visualizing multiple person data on our
+map, refactoring to keep things maintainable and
+algorithmic analysis of people crossing path. Final conclusion and
+discussion about potential evolution and optimizations
+https://www.youtube.com/watch?v=PSr8L5baGkA
 
 Nothing fancy, just writing code.
 

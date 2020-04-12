@@ -106,7 +106,11 @@ class SpreadAnalysis:
             return
 
         valid_spread = crossing.get_duration() > self._spread_minimum_duration
-        crossing.valid_spread = valid_spread
+        crossing.valid_spread = valid_spread and crossing.is_infectious
+
+        if crossing.valid_spread:
+            for person in crossing.persons:
+                person.is_infected = True
 
 
 if __name__ == '__main__':

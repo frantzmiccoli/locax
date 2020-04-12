@@ -1,5 +1,6 @@
 from haversine import haversine
 from locax.model.Crossing import Crossing
+import random
 
 
 class Person:
@@ -9,6 +10,8 @@ class Person:
         self.name = name
         self.locations = locations
         self.marker = None
+
+        self.is_infected = random.randint(0, 99) <= 5
 
         self.crossings = []
         self._active_crossings = []
